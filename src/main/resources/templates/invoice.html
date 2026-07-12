@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      margin: 40px;
+      color: #333;
+    }
+    .header {
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #2563eb;
+      font-size: 28px;
+      margin: 0;
+    }
+    .header p {
+      color: #666;
+      margin: 5px 0 0;
+      font-size: 14px;
+    }
+    .invoice-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    .invoice-meta div {
+      flex: 1;
+    }
+    .invoice-meta .label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      margin: 0 0 4px;
+    }
+    .invoice-meta .value {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .section-title {
+      font-size: 14px;
+      color: #2563eb;
+      text-transform: uppercase;
+      margin: 30px 0 10px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+    .customer-info p {
+      margin: 3px 0;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    table th {
+      background-color: #2563eb;
+      color: white;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+    table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    table tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+    .footer {
+      border-top: 2px solid #2563eb;
+      margin-top: 40px;
+      padding-top: 15px;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Subscription Invoice</h1>
+    <p>Course Registration Confirmation</p>
+  </div>
+
+  <div class="invoice-meta">
+    <div>
+      <p class="label">Invoice Number</p>
+      <p class="value" th:text="'#' + ${registration.id}">#12345</p>
+    </div>
+    <div>
+      <p class="label">Registration Date</p>
+      <p class="value" th:text="${#temporals.format(registration.createdAt, 'yyyy-MM-dd')}">2024-01-01</p>
+    </div>
+  </div>
+
+  <div class="section-title">Customer</div>
+  <div class="customer-info">
+    <p th:text="${user.firstName} + ' ' + ${user.lastName}">John Doe</p>
+    <p th:text="${user.email}">john@example.com</p>
+    <p th:text="'Username: ' + ${user.userName}">johndoe</p>
+  </div>
+
+  <div class="section-title">Subscription Details</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td th:text="${course.title}">Course Title</td>
+        <td th:text="${#temporals.format(course.startDate, 'yyyy-MM-dd')}">2024-01-01</td>
+        <td th:text="${course.endDate != null ? #temporals.format(course.endDate, 'yyyy-MM-dd') : 'N/A'}">2024-02-01</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Thank you for your subscription!</p>
+    <p>Generated automatically by the course registration system.</p>
+  </div>
+</body>
+</html>

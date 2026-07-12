@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f6f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f6f9; padding: 40px 20px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 40px 30px; text-align: center;">
+              <h1 style="color: #ffffff; font-size: 28px; margin: 0; font-weight: 700;">Registration Confirmed!</h1>
+              <p style="color: rgba(255,255,255,0.85); font-size: 16px; margin: 8px 0 0;">You're all set</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 40px 30px;">
+              <p style="font-size: 18px; color: #333; margin: 0 0 6px;">Hello <strong th:text="${user.firstName} + ' ' + ${user.lastName}">John Doe</strong>,</p>
+              <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 24px;">
+                Your registration for the course below has been successfully processed.
+              </p>
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 32px;">
+                <tr>
+                  <td style="padding: 20px;">
+                    <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 4px;">Course</p>
+                    <p style="font-size: 18px; font-weight: 600; color: #1e293b; margin: 0 0 16px;" th:text="${course.title}">Advanced Mathematics</p>
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="50%">
+                          <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 4px;">Start Date</p>
+                          <p style="font-size: 15px; font-weight: 500; color: #333; margin: 0;" th:text="${#temporals.format(course.startDate, 'MMMM dd, yyyy')}">January 1, 2024</p>
+                        </td>
+                        <td width="50%">
+                          <p style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 4px;">End Date</p>
+                          <p style="font-size: 15px; font-weight: 500; color: #333; margin: 0;" th:text="${course.endDate != null ? #temporals.format(course.endDate, 'MMMM dd, yyyy') : 'N/A'}">February 1, 2024</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td style="border-radius: 8px; background-color: #2563eb; text-align: center; padding: 14px 36px;">
+                          <a th:href="${invoiceUrl}" href="#" style="background-color: #2563eb; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; display: inline-block;">Download Your Invoice</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="font-size: 13px; color: #888; text-align: center; margin: 24px 0 0;">
+                The invoice link is valid for 1 hour. If you have any questions, please contact our support team.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: #f8fafc; padding: 20px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p style="font-size: 13px; color: #94a3b8; margin: 4px 0 0;">This is an automated message, please do not reply.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
