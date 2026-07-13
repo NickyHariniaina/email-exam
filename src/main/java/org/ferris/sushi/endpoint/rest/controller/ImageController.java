@@ -18,7 +18,8 @@ public class ImageController {
 
   @PostMapping("/images")
   public ResponseEntity<String> submit(@RequestParam String email) {
-    var event = SendEmailRequested.builder().to(email).body("Your image has been received.").build();
+    var event =
+        SendEmailRequested.builder().to(email).body("Your image has been received.").build();
     eventProducer.accept(List.of(event));
     return ResponseEntity.status(HttpStatus.CREATED).body("ok");
   }
