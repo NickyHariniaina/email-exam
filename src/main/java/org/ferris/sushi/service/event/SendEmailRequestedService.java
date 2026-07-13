@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.ferris.sushi.PojaGenerated;
 import org.ferris.sushi.endpoint.event.model.SendEmailRequested;
 import org.ferris.sushi.mail.Email;
 import org.ferris.sushi.mail.Mailer;
 import org.springframework.stereotype.Service;
 
-@PojaGenerated
 @Service
 @AllArgsConstructor
 public class SendEmailRequestedService implements Consumer<SendEmailRequested> {

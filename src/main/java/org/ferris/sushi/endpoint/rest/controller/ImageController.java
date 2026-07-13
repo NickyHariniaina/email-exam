@@ -2,7 +2,6 @@ package org.ferris.sushi.endpoint.rest.controller;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.ferris.sushi.PojaGenerated;
 import org.ferris.sushi.endpoint.event.EventProducer;
 import org.ferris.sushi.endpoint.event.model.SendEmailRequested;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@PojaGenerated
 @RestController
 @AllArgsConstructor
 public class ImageController {
