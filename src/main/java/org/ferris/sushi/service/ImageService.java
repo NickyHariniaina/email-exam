@@ -34,28 +34,32 @@ public class ImageService {
   public ImageSubmission submit(MultipartFile file, String email) throws IOException {
     validateImage(file);
 
-    UUID id = UUID.randomUUID();
-    String originalFilename = file.getOriginalFilename();
-    String extension = extractExtension(originalFilename);
+    var id = UUID.randomUUID();
+    var originalFilename = file.getOriginalFilename();
+    var extension = extractExtension(originalFilename);
 
-    ImageSubmission submission = new ImageSubmission();
+    var submission = new ImageSubmission();
     submission.setId(id);
     submission.setFileName(originalFilename);
     submission.setEmail(email);
     imageSubmissionRepository.save(submission);
 
-    File tempFile = createTempFile(id.toString(), "." + extension);
+    var tempFile = createTempFile(id.toString(), "." + extension);
     file.transferTo(tempFile);
 
-    File bwFile = convertToBlackAndWhite(tempFile, extension);
-    String bucketKey = "images/" + id + "_bw." + extension;
+    var bwFile = convertToBlackAndWhite(tempFile, extension);
+    var bucketKey = "images/" + id + "_bw." + extension;
     bucketComponent.upload(bwFile, bucketKey);
 
     tempFile.delete();
     bwFile.delete();
 
-    ImageProcessingRequested event =
-        ImageProcessingRequested.builder().submissionId(id.toString()).email(email).s3Key(bucketKey).build();
+    var event =
+        ImageProcessingRequested.builder()
+            .submissionId(id.toString())
+            .email(email)
+            .s3Key(bucketKey)
+            .build();
     eventProducer.accept(List.of(event));
 
     log.info("Image submitted: id={}, fileName={}, email={}", id, originalFilename, email);
@@ -67,7 +71,7 @@ public class ImageService {
   }
 
   private void validateImage(MultipartFile file) {
-    String contentType = file.getContentType();
+    var contentType = file.getContentType();
     if (contentType == null
         || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
       throw new IllegalArgumentException("Only JPEG and PNG images are accepted");
@@ -75,31 +79,31 @@ public class ImageService {
   }
 
   private File convertToBlackAndWhite(File original, String formatName) throws IOException {
-    BufferedImage originalImage = ImageIO.read(new FileInputStream(original));
-    BufferedImage resized = resizeImage(originalImage, 1024);
-    BufferedImage bwImage =
+    var originalImage = ImageIO.read(new FileInputStream(original));
+    var resized = resizeImage(originalImage, 1024);
+    var bwImage =
         new BufferedImage(
             resized.getWidth(), resized.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-    Graphics2D graphics = bwImage.createGraphics();
+    var graphics = bwImage.createGraphics();
     graphics.drawImage(resized, 0, 0, null);
     graphics.dispose();
 
-    File bwFile = createTempFile("bw-", "." + formatName);
+    var bwFile = createTempFile("bw-", "." + formatName);
     ImageIO.write(bwImage, formatName, new FileOutputStream(bwFile));
     return bwFile;
   }
 
   private BufferedImage resizeImage(BufferedImage original, int maxSize) {
-    int width = original.getWidth();
-    int height = original.getHeight();
+    var width = original.getWidth();
+    var height = original.getHeight();
     if (width <= maxSize && height <= maxSize) {
       return original;
     }
-    double scale = Math.min((double) maxSize / width, (double) maxSize / height);
-    int newWidth = (int) (width * scale);
-    int newHeight = (int) (height * scale);
-    BufferedImage resized = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-    Graphics2D g = resized.createGraphics();
+    var scale = Math.min((double) maxSize / width, (double) maxSize / height);
+    var newWidth = (int) (width * scale);
+    var newHeight = (int) (height * scale);
+    var resized = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+    var g = resized.createGraphics();
     g.setRenderingHint(
         RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
     g.drawImage(original, 0, 0, newWidth, newHeight, null);
