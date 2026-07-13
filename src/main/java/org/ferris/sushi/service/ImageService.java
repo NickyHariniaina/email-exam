@@ -57,7 +57,7 @@ public class ImageService {
         ImageProcessingRequested.builder()
             .submissionId(id.toString())
             .email(email)
-            .s3Key(bucketKey)
+            .bucketKey(bucketKey)
             .build();
     eventProducer.accept(List.of(event));
 

@@ -27,7 +27,7 @@ public class ImageProcessingRequestedService implements Consumer<ImageProcessing
   @SneakyThrows
   @Override
   public void accept(ImageProcessingRequested event) {
-    var presignedUrl = bucketComponent.presign(event.getS3Key(), Duration.ofHours(1));
+    var presignedUrl = bucketComponent.presign(event.getBucketKey(), Duration.ofHours(1));
 
     var htmlBody = renderEmailTemplate(event.getEmail(), presignedUrl.toString());
     var recipientAddress = new InternetAddress(event.getEmail());
