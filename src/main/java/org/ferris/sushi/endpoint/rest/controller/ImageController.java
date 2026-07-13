@@ -20,7 +20,7 @@ public class ImageController {
   private final ImageService imageService;
 
   @PostMapping("/images")
-  public ResponseEntity<ImageSubmission> submit(
+  public ResponseEntity<ImageSubmission> create(
       @RequestParam("file") MultipartFile file, @RequestParam("email") String email)
       throws IOException {
     ImageSubmission submission = imageService.submitImage(file, email);
@@ -28,7 +28,7 @@ public class ImageController {
   }
 
   @GetMapping("/images")
-  public List<ImageSubmission> findAll() {
+  public List<ImageSubmission> getAll() {
     return imageService.findAll();
   }
 }
