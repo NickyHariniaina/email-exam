@@ -3,6 +3,7 @@ package org.ferris.sushi.service;
 import static java.io.File.createTempFile;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,16 +76,35 @@ public class ImageService {
 
   private File convertToBlackAndWhite(File original, String formatName) throws IOException {
     BufferedImage originalImage = ImageIO.read(new FileInputStream(original));
+    BufferedImage resized = resizeImage(originalImage, 1024);
     BufferedImage bwImage =
         new BufferedImage(
-            originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+            resized.getWidth(), resized.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
     Graphics2D graphics = bwImage.createGraphics();
-    graphics.drawImage(originalImage, 0, 0, null);
+    graphics.drawImage(resized, 0, 0, null);
     graphics.dispose();
 
     File bwFile = createTempFile("bw-", "." + formatName);
     ImageIO.write(bwImage, formatName, new FileOutputStream(bwFile));
     return bwFile;
+  }
+
+  private BufferedImage resizeImage(BufferedImage original, int maxSize) {
+    int width = original.getWidth();
+    int height = original.getHeight();
+    if (width <= maxSize && height <= maxSize) {
+      return original;
+    }
+    double scale = Math.min((double) maxSize / width, (double) maxSize / height);
+    int newWidth = (int) (width * scale);
+    int newHeight = (int) (height * scale);
+    BufferedImage resized = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g = resized.createGraphics();
+    g.setRenderingHint(
+        RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g.drawImage(original, 0, 0, newWidth, newHeight, null);
+    g.dispose();
+    return resized;
   }
 
   private String extractExtension(String filename) {
