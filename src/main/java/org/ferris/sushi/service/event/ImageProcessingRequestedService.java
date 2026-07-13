@@ -1,7 +1,6 @@
 package org.ferris.sushi.service.event;
 
 import jakarta.mail.internet.InternetAddress;
-import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
@@ -28,10 +27,10 @@ public class ImageProcessingRequestedService implements Consumer<ImageProcessing
   @SneakyThrows
   @Override
   public void accept(ImageProcessingRequested event) {
-    URL presignedUrl = bucketComponent.presign(event.getS3Key(), Duration.ofHours(1));
+    var presignedUrl = bucketComponent.presign(event.getBucketKey(), Duration.ofHours(1));
 
-    String htmlBody = renderEmailTemplate(event.getEmail(), presignedUrl.toString());
-    InternetAddress recipientAddress = new InternetAddress(event.getEmail());
+    var htmlBody = renderEmailTemplate(event.getEmail(), presignedUrl.toString());
+    var recipientAddress = new InternetAddress(event.getEmail());
     mailer.accept(
         new Email(
             recipientAddress,
@@ -46,7 +45,7 @@ public class ImageProcessingRequestedService implements Consumer<ImageProcessing
   }
 
   private String renderEmailTemplate(String email, String imageUrl) {
-    Context context = new Context();
+    var context = new Context();
     context.setVariable("email", email);
     context.setVariable("imageUrl", imageUrl);
     return templateEngine.process("image-processed", context);
