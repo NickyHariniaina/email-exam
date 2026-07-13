@@ -2,7 +2,6 @@ package org.ferris.sushi.service;
 
 import static java.io.File.createTempFile;
 
-import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -82,8 +81,7 @@ public class ImageService {
     var originalImage = ImageIO.read(new FileInputStream(original));
     var resized = resizeImage(originalImage, 1024);
     var bwImage =
-        new BufferedImage(
-            resized.getWidth(), resized.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+        new BufferedImage(resized.getWidth(), resized.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
     var graphics = bwImage.createGraphics();
     graphics.drawImage(resized, 0, 0, null);
     graphics.dispose();
