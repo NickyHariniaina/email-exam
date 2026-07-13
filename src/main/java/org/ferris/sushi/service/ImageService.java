@@ -54,11 +54,7 @@ public class ImageService {
     bwFile.delete();
 
     ImageProcessingRequested event =
-        ImageProcessingRequested.builder()
-            .submissionId(id)
-            .email(email)
-            .s3Key(bucketKey)
-            .build();
+        ImageProcessingRequested.builder().submissionId(id).email(email).s3Key(bucketKey).build();
     eventProducer.accept(List.of(event));
 
     log.info("Image submitted: id={}, fileName={}, email={}", id, originalFilename, email);
