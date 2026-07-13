@@ -30,7 +30,7 @@ public class ImageService {
   private final BucketComponent bucketComponent;
   private final EventProducer<ImageProcessingRequested> eventProducer;
 
-  public ImageSubmission submitImage(MultipartFile file, String email) throws IOException {
+  public ImageSubmission submit(MultipartFile file, String email) throws IOException {
     validateImage(file);
 
     String id = UUID.randomUUID().toString();
@@ -61,7 +61,7 @@ public class ImageService {
     return submission;
   }
 
-  public List<ImageSubmission> findAll() {
+  public List<ImageSubmission> getAll() {
     return imageSubmissionRepository.findAll();
   }
 
