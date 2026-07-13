@@ -4,6 +4,8 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
+
+import jakarta.mail.internet.InternetAddress;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +32,8 @@ public class ImageProcessingRequestedService implements Consumer<ImageProcessing
     URL presignedUrl = bucketComponent.presign(event.getS3Key(), Duration.ofHours(1));
 
     String htmlBody = renderEmailTemplate(event.getEmail(), presignedUrl.toString());
-    jakarta.mail.internet.InternetAddress recipientAddress =
-        new jakarta.mail.internet.InternetAddress(event.getEmail());
+    InternetAddress recipientAddress =
+        new InternetAddress(event.getEmail());
     mailer.accept(
         new Email(
             recipientAddress,
