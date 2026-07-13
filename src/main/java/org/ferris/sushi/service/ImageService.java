@@ -34,7 +34,7 @@ public class ImageService {
   public ImageSubmission submit(MultipartFile file, String email) throws IOException {
     validateImage(file);
 
-    String id = UUID.randomUUID().toString();
+    UUID id = UUID.randomUUID();
     String originalFilename = file.getOriginalFilename();
     String extension = extractExtension(originalFilename);
 
@@ -44,7 +44,7 @@ public class ImageService {
     submission.setEmail(email);
     imageSubmissionRepository.save(submission);
 
-    File tempFile = createTempFile(id, "." + extension);
+    File tempFile = createTempFile(id.toString(), "." + extension);
     file.transferTo(tempFile);
 
     File bwFile = convertToBlackAndWhite(tempFile, extension);
@@ -55,7 +55,7 @@ public class ImageService {
     bwFile.delete();
 
     ImageProcessingRequested event =
-        ImageProcessingRequested.builder().submissionId(id).email(email).s3Key(bucketKey).build();
+        ImageProcessingRequested.builder().submissionId(id.toString()).email(email).s3Key(bucketKey).build();
     eventProducer.accept(List.of(event));
 
     log.info("Image submitted: id={}, fileName={}, email={}", id, originalFilename, email);
