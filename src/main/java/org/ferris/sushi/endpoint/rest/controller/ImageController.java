@@ -20,15 +20,15 @@ public class ImageController {
   private final ImageService imageService;
 
   @PostMapping("/images")
-  public ResponseEntity<ImageSubmission> submit(
+  public ResponseEntity<ImageSubmission> create(
       @RequestParam("file") MultipartFile file, @RequestParam("email") String email)
       throws IOException {
-    ImageSubmission submission = imageService.submitImage(file, email);
+    ImageSubmission submission = imageService.submit(file, email);
     return ResponseEntity.status(HttpStatus.CREATED).body(submission);
   }
 
   @GetMapping("/images")
-  public List<ImageSubmission> findAll() {
-    return imageService.findAll();
+  public List<ImageSubmission> getAll() {
+    return imageService.getAll();
   }
 }
