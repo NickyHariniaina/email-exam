@@ -22,8 +22,8 @@ public class ImageProcessingRequested extends PojaEvent {
   @JsonProperty("email")
   private String email;
 
-  @JsonProperty("s3_key")
-  private String s3Key;
+  @JsonProperty("bucket_key")
+  private String bucketKey;
 
   @Override
   public Duration maxConsumerDuration() {
